@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+        .data-item {
+            margin: 10px 0;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Проверяем доступность Telegram WebApp
+            if (window.Telegram.WebApp) {
+                const userData = window.Telegram.WebApp.initDataUnsafe.user;
+
+                if (userData) {
+                    document.getElementById("user-id").textContent = `User ID: ${userData.id}`;
+                    document.getElementById("user-name").textContent = `User Name: ${userData.username || 'N/A'}`;
+                    document.getElementById("first-name").textContent = `First Name: ${userData.first_name || 'N/A'}`;
+                    document.getElementById("last-name").textContent = `Last Name: ${userData.last_name || 'N/A'}`;
+                } else {
+                    document.getElementById("message").textContent = "User data is not available.";
+                }
+            } else {
+                document.getElementById("message").textContent = "Telegram WebApp is not available.";
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Telegram Web App Data</h1>
+        <div id="message" class="data-item"></div>
+        <div id="user-id" class="data-item"></div>
+        <div id="user-name" class="data-item"></div>
+        <div id="first-name" class="data-item"></div>
+        <div id="last-name" class="data-item"></div>
+    </div>
+</body>
+</html>
