@@ -22,39 +22,43 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             background-color: white;
+            word-break: break-all; /* Чтобы длинные строки не ломали макет */
         }
         .data-item {
             margin: 10px 0;
+            text-align: left;
+            width: 100%;
+        }
+        pre {
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
     </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Проверяем доступность Telegram WebApp
-            if (window.Telegram.WebApp) {
-                const userData = window.Telegram.WebApp.initDataUnsafe.user;
-
-                if (userData) {
-                    document.getElementById("user-id").textContent = `User ID: ${userData.id}`;
-                    document.getElementById("user-name").textContent = `User Name: ${userData.username || 'N/A'}`;
-                    document.getElementById("first-name").textContent = `First Name: ${userData.first_name || 'N/A'}`;
-                    document.getElementById("last-name").textContent = `Last Name: ${userData.last_name || 'N/A'}`;
-                } else {
-                    document.getElementById("message").textContent = "User data is not available.";
-                }
-            } else {
-                document.getElementById("message").textContent = "Telegram WebApp is not available.";
-            }
-        });
-    </script>
 </head>
 <body>
     <div class="container">
         <h1>Telegram Web App Data</h1>
-        <div id="message" class="data-item"></div>
-        <div id="user-id" class="data-item"></div>
-        <div id="user-name" class="data-item"></div>
-        <div id="first-name" class="data-item"></div>
-        <div id="last-name" class="data-item"></div>
+        <pre id="data-output"></pre>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const webApp = window.Telegram.WebApp;
+            const outputElement = document.getElementById("data-output");
+
+            if (webApp) {
+                const initDataUnsafe = webApp.initDataUnsafe;
+
+                if (initDataUnsafe) {
+                    outputElement.textContent = JSON.stringify(initDataUnsafe, null, 2);
+                } else {
+                    outputElement.textContent = "No data available.";
+                }
+            } else {
+                outputElement.textContent = "Telegram WebApp is not available.";
+            }
+        });
+    </script>
 </body>
 </html>
